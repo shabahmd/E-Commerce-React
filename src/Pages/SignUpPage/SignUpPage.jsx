@@ -1,11 +1,45 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth'; // Corrected import
 import { auth } from 'FirebaseConfig';
+import { ToastContainer, toast } from 'react-toastify';
+
+
+
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+
+
+    const handleGoogleLongin = () => {
+        signInWithPopup(auth, provider).then(result => { })
+    }
+
+
+
+    const notify = (message) => {
+        toast(message, {
+
+
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: false,
+            progress: undefined,
+            them: 'dark'
+
+
+
+        })
+    }
+
+
+
+
+
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -14,12 +48,24 @@ export function LoginPage() {
                 console.log(result.user);
             })
             .catch((error) => {
-                console.error(error);
-                console.log(error.message); // Corrected error.message
-                console.log(error.code); // Corrected error.code
+                switch (error.code) {
+                    case "auth/invalid-email":
+                        notify("bad email")
+                        break;
+                    case "auth/weak-password":
+                        notify("password should be atleast 6 characters")
+                        break;
+                    case "auth/emaill-already-in-use":
+                        notify("User already exists")
+                        break;
+                    default:
+                        notify(error.message)
+                        break
+
+                }
+                console.log(error)
             });
     }
-
     return (
         <div className='container'>
             <h3>Sign In</h3>
@@ -51,6 +97,9 @@ export function LoginPage() {
                 />
                 <button type="submit">Submit</button>
             </form>
+
+
+            <ToastContainer />
         </div>
     );
 }
