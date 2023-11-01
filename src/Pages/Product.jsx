@@ -3,12 +3,6 @@ import SideNav from "../../components/SideNav/SideNav"
 import "./Product.css"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
-import { addToCart } from "../../slices/cart"
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { addDoc, arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore"
-import { db } from "../../FirebaseConfig"
-import QuantityController from "../../components/QuantityController/QuantityController"
 
 function Product() {
 
